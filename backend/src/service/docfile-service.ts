@@ -36,7 +36,7 @@ export class DocfileService {
   async getDocfile(docfileId: string): Promise<DocfileResponseDTO> {
     const docfile = await this.docfileRepository.getDocfileById(docfileId);
     if (!docfile)
-      throw new CustomError("Docfile not found!", ErrorType.NOT_FOUND);
+      throw new CustomError("Document not found!", ErrorType.NOT_FOUND);
 
     const creator = await this.userRepository.getUserById(docfile.creatorId);
     if (!creator)
@@ -58,7 +58,7 @@ export class DocfileService {
 
     let docfile = await this.docfileRepository.getDocfileById(docfileId);
     if (!docfile)
-      throw new CustomError("Docfile not found!", ErrorType.NOT_FOUND);
+      throw new CustomError("Document not found!", ErrorType.NOT_FOUND);
 
     if (
       docfile.creatorId.toString() != editorId &&
@@ -83,5 +83,26 @@ export class DocfileService {
     const editors = await this.userRepository.listUsersByIds(docfile.editorIds);
 
     return mapToDocfileResponseDTO(docfile, creator, editors);
+  }
+
+  async deleteDocfile(docfileId: string, userId: string) {
+    const docfile = await this.docfileRepository.getDocfileById(docfileId);
+    if (!docfile)
+      throw new CustomError("Document not found!", ErrorType.NOT_FOUND);
+
+    if (
+      docfile.creatorId.toString() != userId &&
+      !docfile.editorIds.includes(new Types.ObjectId(userId))
+    )
+      throw new CustomError(
+        "You are not authorized to delete this document",
+        ErrorType.FORBIDDEN
+      );
+
+    await this.docfileRepository.deleteDocfileById(docfileId);
+    await this.userRepository.removeDocfileId(docfile.creatorId, docfileId);
+    for (const editorId of docfile.editorIds) {
+      await this.userRepository.removeDocfileId(editorId, docfileId);
+    }
   }
 }

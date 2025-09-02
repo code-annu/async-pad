@@ -47,7 +47,7 @@ export class UserRepository extends BaseRepository<User> {
     return updatedUser ? updatedUser.toObject() : null;
   }
 
-  async deleteDocfileId(
+  async removeDocfileId(
     userId: string | Types.ObjectId,
     docfileId: string | Types.ObjectId
   ): Promise<User | null> {

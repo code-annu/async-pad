@@ -79,4 +79,29 @@ export class DocfileController {
       res.json({ status: "failed", message: message });
     }
   }
+
+  async docfileDelete(req: Request, res: Response) {
+    try {
+      const user = req.user;
+
+      const { docfileId } = req.params;
+      if (!docfileId) throw Error("Include docfileId in path");
+
+      await this.docfileService.deleteDocfile(docfileId, user.userId);
+
+      res
+        .status(200)
+        .json({ status: "success", message: "Document deleted successfully" });
+    } catch (e) {
+      let message: string;
+      if (e instanceof CustomError) {
+        res.status(e.errorType.valueOf());
+        message = e.message;
+      } else {
+        res.status(400);
+        message = (e as Error).message;
+      }
+      res.json({ status: "failed", message: message });
+    }
+  }
 }

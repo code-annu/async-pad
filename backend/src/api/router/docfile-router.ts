@@ -25,3 +25,8 @@ docfileRouter.patch(
   validateRequestBody(docfileUpdateSchema),
   docfileController.docfilePatch.bind(docfileController)
 );
+
+docfileRouter.delete(
+  "/:docfileId",
+  docfileController.docfileDelete.bind(docfileController)
+);
