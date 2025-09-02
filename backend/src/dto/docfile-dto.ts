@@ -2,7 +2,6 @@ export interface DocfileCreateDTO {
   name: string;
   content: string;
   creatorId: string;
-  editorIds: string[];
 }
 
 export interface DocfileUpdateDTO

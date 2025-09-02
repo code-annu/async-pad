@@ -6,7 +6,6 @@ export interface User extends Document {
   passwordHash: string;
   name: string;
   bio?: string | null;
-  projectIds: Types.ObjectId[];
   invitationIds?: Types.ObjectId[];
   docfileIds: Types.ObjectId[];
   createdAt: Date;
@@ -28,7 +27,6 @@ const UserSchema = new Schema<User>(
       required: [true, "Name is required"],
       minLength: [2, "Name should be at least 2 characters long"],
     },
-    projectIds: [{ type: Types.ObjectId, required: true, ref: "Project" }],
     docfileIds: [{ type: Types.ObjectId, required: true, ref: "Docfile" }],
     invitationIds: [
       { type: Types.ObjectId, required: true, ref: "Invitation" },

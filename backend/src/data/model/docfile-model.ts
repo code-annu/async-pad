@@ -25,7 +25,7 @@ const DocfileSchema = new Schema<Docfile>(
     },
     editorIds: [
       {
-        types: Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: [true, "Editor id is required"],
         ref: "User",
       },

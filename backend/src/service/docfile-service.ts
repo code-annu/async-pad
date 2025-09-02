@@ -4,7 +4,6 @@ import {
   DocfileUpdateDTO,
 } from "../dto/docfile-dto";
 import { DocfileRepository } from "../data/repository/docfile-repository";
-import { Docfile } from "../data/model/docfile-model";
 import { CustomError } from "../error/custom-error";
 import { ErrorType } from "../error/error-type";
 import { UserRepository } from "../data/repository/user-repository";
@@ -18,30 +17,71 @@ export class DocfileService {
   async createNewDocfile(
     docfileData: DocfileCreateDTO
   ): Promise<DocfileResponseDTO> {
-    const { name, content, creatorId, editorIds } = docfileData;
-    const creator = await this.userRepository.getUserById(creatorId);
+    const { creatorId } = docfileData;
+    let creator = await this.userRepository.getUserById(creatorId);
     if (!creator)
       throw new CustomError("Creator not found", ErrorType.NOT_FOUND);
 
-    const editors = await this.userRepository.listUsersByIds(editorIds);
     const docfile = await this.docfileRepository.saveDocfile({
       ...docfileData,
       creatorId: new Types.ObjectId(creatorId),
-      editorIds: editors.map((editor) => editor._id),
     });
+
+    creator = await this.userRepository.addDocfileId(creatorId, docfile._id);
+    if (!creator) throw Error("Cannot update user");
+
+    return mapToDocfileResponseDTO(docfile, creator, []);
+  }
+
+  async getDocfile(docfileId: string): Promise<DocfileResponseDTO> {
+    const docfile = await this.docfileRepository.getDocfileById(docfileId);
+    if (!docfile)
+      throw new CustomError("Docfile not found!", ErrorType.NOT_FOUND);
+
+    const creator = await this.userRepository.getUserById(docfile.creatorId);
+    if (!creator)
+      throw new CustomError("Creator not found", ErrorType.NOT_FOUND);
+
+    const editors = await this.userRepository.listUsersByIds(docfile.editorIds);
 
     return mapToDocfileResponseDTO(docfile, creator, editors);
   }
 
-  /*async updateDocfile(
+  async updateDocfile(
     editorId: string,
     docfileId: string,
     updates: DocfileUpdateDTO
   ): Promise<DocfileResponseDTO> {
-    const docfile = await this.docfileRepository.getDocfileById(docfileId);
-    if (!docfile)
-      throw new CustomError("Docfile not found", ErrorType.NOT_FOUND);
+    const {} = updates;
+    let editor = await this.userRepository.getUserById(editorId);
+    if (!editor) throw new CustomError("Editor not found", ErrorType.NOT_FOUND);
 
-    const editor = await this.userRepository.
-  }*/
+    let docfile = await this.docfileRepository.getDocfileById(docfileId);
+    if (!docfile)
+      throw new CustomError("Docfile not found!", ErrorType.NOT_FOUND);
+
+    if (
+      docfile.creatorId.toString() != editorId &&
+      !docfile.editorIds.includes(new Types.ObjectId(editorId))
+    )
+      throw new CustomError(
+        "You are not authorized to edit this document",
+        ErrorType.FORBIDDEN
+      );
+
+    docfile = await this.docfileRepository.updateDocfileById(
+      docfileId,
+      updates
+    );
+
+    if (!docfile) throw Error("Cannot update file");
+
+    const creator = await this.userRepository.getUserById(docfile.creatorId);
+    if (!creator)
+      throw new CustomError("Creator not found", ErrorType.NOT_FOUND);
+
+    const editors = await this.userRepository.listUsersByIds(docfile.editorIds);
+
+    return mapToDocfileResponseDTO(docfile, creator, editors);
+  }
 }

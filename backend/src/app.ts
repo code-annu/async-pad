@@ -1,6 +1,10 @@
 import express from "express";
 import { createServer } from "http";
 import { connectDB } from "./config/db";
+import { authRouter } from "./api/router/auth-router";
+import Request from "../src/types/express/index";
+import { docfileRouter } from "./api/router/docfile-router";
+import { validateToken } from "./api/middleware/validate-token";
 
 import cors from "cors";
 
@@ -18,7 +22,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use("/api/projects", validateToken, projectRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/documents", validateToken, docfileRouter);
 
 const PORT = 3000;
 connectDB().then(() => {

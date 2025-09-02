@@ -34,26 +34,26 @@ export class UserRepository extends BaseRepository<User> {
     return super.updateById(userId, updatedData);
   }
 
-  async addProjectId(
+  async addDocfileId(
     userId: string | Types.ObjectId,
-    projectId: string | Types.ObjectId
+    docfileId: string | Types.ObjectId
   ): Promise<User | null> {
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
-      { $addToSet: { projectIds: projectId } }, // Append projectIds array with Safely avoid duplicates: $addToSet
+      { $addToSet: { docfileIds: docfileId } }, // Append projectIds array with Safely avoid duplicates: $addToSet
       { new: true }
     );
 
     return updatedUser ? updatedUser.toObject() : null;
   }
 
-  async deleteProjectId(
+  async deleteDocfileId(
     userId: string | Types.ObjectId,
-    projectId: string | Types.ObjectId
+    docfileId: string | Types.ObjectId
   ): Promise<User | null> {
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
-      { $pull: { projectIds: projectId } },
+      { $pull: { docfileIds: docfileId } },
       { new: true }
     );
 

@@ -8,7 +8,7 @@ export class DocfileRepository extends BaseRepository<Docfile> {
   }
 
   saveDocfile = (
-    docfileData: Pick<Docfile, "name" | "content" | "creatorId" | "editorIds">
+    docfileData: Pick<Docfile, "name" | "content" | "creatorId">
   ) => super.save(docfileData);
 
   getDocfileById = (docfileId: string | Types.ObjectId) =>
