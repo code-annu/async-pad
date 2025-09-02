@@ -11,3 +11,8 @@ invitationRouter.patch(
   validateRequestBody(inviteRespondSchema),
   invitationController.invitationRespondPatch.bind(invitationController)
 );
+
+invitationRouter.get(
+  "/:invitationId",
+  invitationController.invitationGet.bind(invitationController)
+);

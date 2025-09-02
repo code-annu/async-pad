@@ -6,7 +6,7 @@ export interface User extends Document {
   passwordHash: string;
   name: string;
   bio?: string | null;
-  invitationIds?: Types.ObjectId[];
+  invitationIds: Types.ObjectId[];
   docfileIds: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;

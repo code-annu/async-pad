@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRouter);
 app.use("/api/documents", validateToken, docfileRouter);
 app.use("/api/invitations", validateToken, invitationRouter);
-app.use("/api/users/:username", userRouter);
+app.use("/api/users/:username",validateToken, userRouter);
 
 const PORT = 3000;
 connectDB().then(() => {

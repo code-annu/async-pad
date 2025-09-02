@@ -5,10 +5,12 @@ import {
   UserProfileResponseDTO,
 } from "../dto/user-dto";
 import { DocfileResponseDTO } from "../dto/docfile-dto";
+import { Invitation } from "../data/model/invitation-model";
 
 export function mapToUserProfileResponse(
   user: User,
-  docfiles: Docfile[]
+  docfiles: Docfile[],
+  invitations: Invitation[] | null
 ): UserProfileResponseDTO {
   const userResponse: UserProfileResponseDTO = {
     id: user._id.toString(),
@@ -18,6 +20,11 @@ export function mapToUserProfileResponse(
     documents: docfiles.map((docfile) => {
       return { id: docfile._id.toString(), name: docfile.name };
     }),
+    invitations: invitations
+      ? invitations.map((invitation) => {
+          return { id: invitation._id.toString(), message: invitation.message };
+        })
+      : null,
   };
 
   return userResponse;

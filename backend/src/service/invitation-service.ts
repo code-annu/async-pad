@@ -16,7 +16,7 @@ export class InvitationService {
   private userRepository = new UserRepository();
   private docfileRepository = new DocfileRepository();
 
-  async sendProjectInvitation(
+  async sendDocfileInvitation(
     invitationData: InvitationCreateDTO
   ): Promise<InvitationResponseDTO> {
     const { inviterId, inviteeUsername, docfileId, message } = invitationData;
@@ -71,7 +71,6 @@ export class InvitationService {
     const invitation = await this.invitationRepository.getInvitationById(
       invitationId
     );
-
     if (!invitation) throw Error("Invitation not found!");
 
     if (invitation.inviteeId.toString() != inviteeId)
@@ -105,4 +104,28 @@ export class InvitationService {
       docfile
     );
   }
+
+  async getInvitationDetails(invitationId: string) {
+    const invitation = await this.invitationRepository.getInvitationById(
+      invitationId
+    );
+    if (!invitation) throw Error("Invitation not found!");
+
+    const docfile = await this.docfileRepository.getDocfileById(
+      invitation.docfileId
+    );
+    if (!docfile)
+      throw new CustomError("Document not found!", ErrorType.NOT_FOUND);
+
+    const inviter = await this.userRepository.getUserById(invitation.inviterId);
+    if (!inviter)
+      throw new CustomError("Inviting user not found!", ErrorType.NOT_FOUND);
+
+    const invitee = await this.userRepository.getUserById(invitation.inviteeId);
+    if (!invitee)
+      throw new CustomError("Invited user not found!", ErrorType.NOT_FOUND);
+
+    return mapToInvitationResponseDTO(invitation, inviter, invitee, docfile);
+  }
+
 }

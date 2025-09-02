@@ -12,12 +12,17 @@ import {
 } from "../mapper/user-mapper";
 import { DocfileResponseDTO } from "../dto/docfile-dto";
 import { mapToDocfileResponseDTO } from "../mapper/docfile-mapper";
+import { InvitationRepository } from "../data/repository/invitation-repository";
 
 export class UserService {
   private userRepository = new UserRepository();
   private docfileRepository = new DocfileRepository();
+  private invitationRepository = new InvitationRepository();
 
-  async getUserProfile(username: string): Promise<UserProfileResponseDTO> {
+  async getUserProfile(
+    username: string,
+    includeInvitations: boolean = false
+  ): Promise<UserProfileResponseDTO> {
     const user = await this.userRepository.getUserByUsername(username);
     if (!user) throw new CustomError("User not found", ErrorType.NOT_FOUND);
 
@@ -25,7 +30,12 @@ export class UserService {
       user.docfileIds
     );
 
-    return mapToUserProfileResponse(user, docfiles);
+    let invitations = null;
+    if (includeInvitations)
+      invitations = await this.invitationRepository.listInvitationsByIds(
+        user.invitationIds
+      );
+    return mapToUserProfileResponse(user, docfiles, invitations);
   }
 
   async getUserDocfiles(username: string): Promise<UserDocfilesResponseDTO> {
@@ -50,4 +60,6 @@ export class UserService {
 
     return mapToUserDocfilesResponse(user, docfilesResponse);
   }
+
+  // async getUserInvitations(userId: string) {}
 }

@@ -10,8 +10,10 @@ export class UserController {
       const { username } = req.params;
       if (!username) throw Error("Include username in path");
 
+      const user = req.user;
       const userProfileResponse = await this.userService.getUserProfile(
-        username
+        username,
+        user.username === username
       );
 
       res.status(200).json(userProfileResponse);

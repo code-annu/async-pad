@@ -13,6 +13,7 @@ export interface UserProfileResponseDTO {
   id: string;
   bio?: string | null | undefined;
   documents: { id: string; name: string }[];
+  invitations: { id: string; message: string }[] | null;
 }
 
 export interface UserDocfilesResponseDTO {

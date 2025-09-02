@@ -5,6 +5,7 @@ import { InvitationStatus } from "../../types/invitation-types";
 
 export class InvitationController {
   private invitationService = new InvitationService();
+
   async invitationPost(req: Request, res: Response) {
     try {
       const { username, message } = req.body;
@@ -14,7 +15,7 @@ export class InvitationController {
       if (!docfileId) throw Error("Include docfileId in path");
 
       const invitationResponse =
-        await this.invitationService.sendProjectInvitation({
+        await this.invitationService.sendDocfileInvitation({
           inviteeUsername: username,
           message: message,
           inviterId: user.userId,
@@ -22,6 +23,28 @@ export class InvitationController {
         });
 
       res.status(201).json(invitationResponse);
+    } catch (e) {
+      let message: string;
+      if (e instanceof CustomError) {
+        res.status(e.errorType.valueOf());
+        message = e.message;
+      } else {
+        res.status(400);
+        message = (e as Error).message;
+      }
+      res.json({ status: "failed", message: message });
+    }
+  }
+
+  async invitationGet(req: Request, res: Response) {
+    try {
+      const { invitationId } = req.params;
+      if (!invitationId) throw Error("Include invitationId in path");
+
+      const invitationResponse =
+        await this.invitationService.getInvitationDetails(invitationId);
+
+      res.status(200).json(invitationResponse);
     } catch (e) {
       let message: string;
       if (e instanceof CustomError) {
