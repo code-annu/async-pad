@@ -1,0 +1,6 @@
+export enum ErrorType {
+  RESOURCE_ALREADY_EXISTS = 409,
+  UNAUTHORIZED = 401,
+  NOT_FOUND = 404,
+  FORBIDDEN = 403,
+}
