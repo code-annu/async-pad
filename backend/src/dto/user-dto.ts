@@ -1,3 +1,5 @@
+import { DocfileResponseDTO } from "./docfile-dto";
+
 export interface UserRegisterDTO {
   username: string;
   password: string;
@@ -5,10 +7,16 @@ export interface UserRegisterDTO {
   bio: string;
 }
 
-export interface UserResponseDTO {
+export interface UserProfileResponseDTO {
   username: string;
   name: string;
   id: string;
-  bio?: string | null;
-  //   projects:{}[]
+  bio?: string | null | undefined;
+  documents: { id: string; name: string }[];
+}
+
+export interface UserDocfilesResponseDTO {
+  username: string;
+  name: string;
+  docfiles: DocfileResponseDTO[];
 }
