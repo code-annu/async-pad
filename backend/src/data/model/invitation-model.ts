@@ -5,7 +5,7 @@ export interface Invitation extends Document {
   _id: Types.ObjectId;
   inviterId: Types.ObjectId;
   inviteeId: Types.ObjectId;
-  projectId: Types.ObjectId;
+  docfileId: Types.ObjectId;
   status: InvitationStatus;
   message: string;
   createdAt: Date;
@@ -16,7 +16,7 @@ const invitationSchema = new Schema<Invitation>(
   {
     inviterId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     inviteeId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    projectId: { type: Schema.Types.ObjectId, ref: "Project", required: true },
+    docfileId: { type: Schema.Types.ObjectId, ref: "Docfile", required: true },
     status: {
       type: String,
       enum: Object.values(InvitationStatus),

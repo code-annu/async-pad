@@ -5,9 +5,12 @@ import {
   docfileUpdateSchema,
 } from "../schema/docfile-schema";
 import { validateRequestBody } from "../middleware/validate-request-body";
+import { InvitationController } from "../controller/invitation-controller";
+import { inviteSendSchema } from "../schema/invitation-schema";
 
 export const docfileRouter = Router({ mergeParams: true });
 const docfileController = new DocfileController();
+const invitationController = new InvitationController();
 
 docfileRouter.post(
   "/",
@@ -29,4 +32,10 @@ docfileRouter.patch(
 docfileRouter.delete(
   "/:docfileId",
   docfileController.docfileDelete.bind(docfileController)
+);
+
+docfileRouter.post(
+  "/:docfileId/invite",
+  validateRequestBody(inviteSendSchema),
+  invitationController.invitationPost.bind(invitationController)
 );

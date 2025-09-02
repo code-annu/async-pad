@@ -5,6 +5,7 @@ import { authRouter } from "./api/router/auth-router";
 import Request from "../src/types/express/index";
 import { docfileRouter } from "./api/router/docfile-router";
 import { validateToken } from "./api/middleware/validate-token";
+import { invitationRouter } from "./api/router/invitation-router";
 
 import cors from "cors";
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/documents", validateToken, docfileRouter);
+app.use("/api/invitations", validateToken, invitationRouter);
 
 const PORT = 3000;
 connectDB().then(() => {
