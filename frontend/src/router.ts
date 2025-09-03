@@ -5,9 +5,11 @@ import HomePage from "./presentation/pages/dashboard/HomePage";
 import DashboardLayout from "./presentation/layouts/DashboardLayout";
 import DocumentsPage from "./presentation/pages/dashboard/DocumentsPage";
 import ProfilePage from "./presentation/pages/dashboard/ProfilePage";
+import CreateDocumentTab from "./presentation/components/document/CreateDocumentTab";
 
 export const enum AppRoute {
   HOME = "/",
+  TEST = "/test",
   DOCUMENTS = "/:username/documents",
   PROFILE = "/:username",
   LOGIN = "/login",
@@ -15,6 +17,7 @@ export const enum AppRoute {
 }
 
 export const appRouter = createBrowserRouter([
+  { path: AppRoute.TEST, Component: CreateDocumentTab },
   {
     path: AppRoute.HOME,
     Component: DashboardLayout,

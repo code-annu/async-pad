@@ -1,9 +1,9 @@
-import CreateDocumentPage from "../../components/document/CreateDocument";
+import CreateDocumentTab from "../../components/document/CreateDocumentTab";
 
 function DocumentsPage() {
   return (
     <div>
-      <CreateDocumentPage />
+      <CreateDocumentTab />
     </div>
   );
 }

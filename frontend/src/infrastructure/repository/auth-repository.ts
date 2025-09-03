@@ -22,4 +22,12 @@ export class AuthRepository implements IAuthRepository {
 
     return mapToUser(authResponse);
   }
+
+  async refreshToken(token: string): Promise<User> {
+    const authResponse = await postRequest<AuthResponse>(
+      "/auth/refresh-token",
+      { refreshToken: token }
+    );
+    return mapToUser(authResponse);
+  }
 }

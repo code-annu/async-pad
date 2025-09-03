@@ -1,17 +1,12 @@
 import type { AxiosError } from "axios";
-import { API_BASE_URL } from "../config";
-import axios from "axios";
+import axiosInstance from "../config";
 import { CustomError } from "../../../error/custom-error";
 import { ErrorType } from "../../../error/error-type";
 
-export async function getRequest<T>(endpoint: string, token?: string) {
+export async function getRequest<T>(endpoint: string) {
   try {
-    const response = await axios.post(`${API_BASE_URL}${endpoint}`, {
+    const response = await axiosInstance.post(`${endpoint}`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
     });
     return response.data as T;
   } catch (e) {

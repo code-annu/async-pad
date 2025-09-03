@@ -1,20 +1,12 @@
 import { CustomError } from "../../../error/custom-error";
 import { ErrorType } from "../../../error/error-type";
-import { API_BASE_URL } from "../config";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import axiosInstance from "../config";
 
-export async function postRequest<T>(
-  endpoint: string,
-  body?: unknown,
-  token?: string
-) {
+export async function postRequest<T>(endpoint: string, body?: unknown) {
   try {
-    const response = await axios.post(`${API_BASE_URL}${endpoint}`, body, {
+    const response = await axiosInstance.post(`${endpoint}`, body, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
     });
     return response.data as T;
   } catch (e) {
