@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import InputField from "../../components/InputField";
-import PrimaryButton from "../../components/PrimaryButton";
+import InputField from "../../components/common/InputField";
+import PrimaryButton from "../../components/common/PrimaryButton";
 import { useState } from "react";
 import { AppRoute } from "../../../router";
 

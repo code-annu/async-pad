@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../application/hooks/auth-hook";
-import InputField from "../../components/InputField";
-import PrimaryButton from "../../components/PrimaryButton";
+import InputField from "../../components/common/InputField";
+import PrimaryButton from "../../components/common/PrimaryButton";
 import { AppRoute } from "../../../router";
 
 function LoginPage() {
