@@ -1,0 +1,7 @@
+export enum ErrorType {
+  CONFLICT = 409,
+  UNAUTHENTICATED = 401,
+  NOT_FOUND = 404,
+  FORBIDDEN = 403,
+  BAD_REQUEST = 400,
+}

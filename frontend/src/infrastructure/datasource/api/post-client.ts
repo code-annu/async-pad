@@ -1,0 +1,41 @@
+import { CustomError } from "../../../error/custom-error";
+import { ErrorType } from "../../../error/error-type";
+import { API_BASE_URL } from "../config";
+import axios, { AxiosError } from "axios";
+
+export async function postRequest<T>(
+  endpoint: string,
+  body?: unknown,
+  token?: string
+) {
+  try {
+    const response = await axios.post(`${API_BASE_URL}${endpoint}`, body, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data as T;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    switch (axiosError.status) {
+      case ErrorType.CONFLICT:
+        throw new CustomError("Resource conflicts", ErrorType.CONFLICT);
+      case ErrorType.FORBIDDEN:
+        throw new CustomError(
+          "You are not authorized to access the resource",
+          ErrorType.FORBIDDEN
+        );
+      case ErrorType.NOT_FOUND:
+        throw new CustomError("Resource not found!", ErrorType.NOT_FOUND);
+      case ErrorType.UNAUTHENTICATED:
+        throw new CustomError(
+          "You are not authenticated",
+          ErrorType.UNAUTHENTICATED
+        );
+      default:
+        throw new CustomError("Bad request", ErrorType.BAD_REQUEST);
+    }
+  }
+}

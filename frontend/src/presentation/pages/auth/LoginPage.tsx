@@ -1,15 +1,29 @@
-// import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../../application/hooks/auth-hook";
 import InputField from "../../components/InputField";
 import PrimaryButton from "../../components/PrimaryButton";
-// import { AppRoute } from "../../../routes";
+import { AppRoute } from "../../../router";
 
 function LoginPage() {
+  const { login, user } = useAuth();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigateTo = useNavigate();
+
+  useEffect(() => {
+    if (user) navigateTo(AppRoute.HOME);
+  }, [navigateTo, user]);
+
+  const onLogin = () => {
+    login(username, password);
+  };
+
   return (
-    <form
-      className=" w-1/2 mx-auto p-10 shadow-lg my-10 rounded flex flex-col space-y-5"
-      method="post"
-    >
+    <div className=" w-1/2 mx-auto p-10 shadow-lg my-10 rounded flex flex-col space-y-5">
       <InputField
+        value={username}
+        onValueChange={setUsername}
         placeholder="Enter a username"
         label="Username"
         paddingY="py-2"
@@ -17,6 +31,8 @@ function LoginPage() {
       />
 
       <InputField
+        value={password}
+        onValueChange={setPassword}
         placeholder="Enter password"
         label="Password"
         type="password"
@@ -26,17 +42,14 @@ function LoginPage() {
 
       <PrimaryButton
         text="Login"
-        onClick={() => 15}
+        onClick={onLogin}
         buttonType="submit"
         height="h-12"
       />
-      {/* <Link to={AppRoute.REGISTER} className="mx-auto text-green-700">
+      <Link to={AppRoute.REGISTER} className="mx-auto text-green-700">
         Don't have an account? Register
-      </Link> */}
-      <a href="" className="mx-auto text-green-700">
-        Don't have an account? Register
-      </a>
-    </form>
+      </Link>
+    </div>
   );
 }
 
