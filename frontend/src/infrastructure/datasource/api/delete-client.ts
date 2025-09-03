@@ -9,7 +9,7 @@ export async function deleteRequest<T>(
   token?: string
 ) {
   try {
-    const response = await axios.post(`${API_BASE_URL}${endpoint}`, body, {
+    const response = await axios.delete(`${API_BASE_URL}${endpoint}`,  {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

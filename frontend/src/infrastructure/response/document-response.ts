@@ -6,4 +6,6 @@ export interface DocumentResponse {
     username: string;
     name: string;
   };
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -5,6 +5,10 @@ export interface User {
   bio?: string;
   accessToken: string;
   refreshToken: string;
+  documents: {
+    id: string;
+    name: string;
+  }[];
 }
 
 export interface UserRegister {

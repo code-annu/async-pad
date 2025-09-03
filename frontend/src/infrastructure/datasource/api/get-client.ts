@@ -5,12 +5,14 @@ import { ErrorType } from "../../../error/error-type";
 
 export async function getRequest<T>(endpoint: string) {
   try {
-    const response = await axiosInstance.post(`${endpoint}`, {
+    const response = await axiosInstance.get(`${endpoint}`, {
       method: "GET",
     });
+    console.log(response.data)
     return response.data as T;
   } catch (e) {
     const axiosError = e as AxiosError;
+    console.log(axiosError.response?.data)
     switch (axiosError.status) {
       case ErrorType.FORBIDDEN:
         throw new CustomError(
