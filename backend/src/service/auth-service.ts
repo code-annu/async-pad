@@ -14,12 +14,17 @@ import { mapToAuthResponseDTO } from "../mapper/auth-mapper";
 import bcrypt from "bcrypt";
 import { CustomError } from "../error/custom-error";
 import { ErrorType } from "../error/error-type";
+import { mapToUserProfileResponse } from "../mapper/user-mapper";
+import { DocfileRepository } from "../data/repository/docfile-repository";
+import { InvitationRepository } from "../data/repository/invitation-repository";
 
 const SALT_NUM = 10;
 
 export class AuthService {
   private userRepository = new UserRepository();
   private refreshTokenRepository = new RefreshTokenRepository();
+  private docfileRepository = new DocfileRepository();
+  private invitationRepository = new InvitationRepository();
 
   async registerUser(userData: UserRegisterDTO): Promise<AuthResponseDTO> {
     const { username, password, name, bio } = userData;
@@ -44,7 +49,13 @@ export class AuthService {
       newUser
     );
 
-    return mapToAuthResponseDTO(newUser, refreshTokenData, accessToken);
+    const userProfileResponse = mapToUserProfileResponse(newUser, [], []);
+
+    return mapToAuthResponseDTO(
+      userProfileResponse,
+      refreshTokenData,
+      accessToken
+    );
   }
 
   async loginUser(
@@ -66,7 +77,17 @@ export class AuthService {
       user
     );
 
-    return mapToAuthResponseDTO(user, refreshTokenData, accessToken);
+    const userProfileResponse = mapToUserProfileResponse(
+      user,
+      await this.docfileRepository.listDocfilesByIds(user.docfileIds),
+      await this.invitationRepository.listInvitationsByIds(user.invitationIds)
+    );
+
+    return mapToAuthResponseDTO(
+      userProfileResponse,
+      refreshTokenData,
+      accessToken
+    );
   }
 
   async refreshToken(refreshToken: string): Promise<AuthResponseDTO> {
@@ -91,7 +112,18 @@ export class AuthService {
     const [refreshTokenData, accessToken] = await this.generateAndSaveTokens(
       user
     );
-    return mapToAuthResponseDTO(user, refreshTokenData, accessToken);
+
+    const userProfileResponse = mapToUserProfileResponse(
+      user,
+      await this.docfileRepository.listDocfilesByIds(user.docfileIds),
+      await this.invitationRepository.listInvitationsByIds(user.invitationIds)
+    );
+
+    return mapToAuthResponseDTO(
+      userProfileResponse,
+      refreshTokenData,
+      accessToken
+    );
   }
 
   private async generateAndSaveTokens(

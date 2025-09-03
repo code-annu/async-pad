@@ -1,20 +1,16 @@
 import { User } from "../data/model/user-model";
 import { RefreshToken } from "../data/model/refresh-token-model";
 import { AuthResponseDTO } from "../dto/auth-dto";
+import { UserProfileResponseDTO } from "../dto/user-dto";
 
 export function mapToAuthResponseDTO(
-  user: User,
+  userProfile: UserProfileResponseDTO,
   refreshTokenData: RefreshToken,
   accessToken: string
 ) {
-  const { _id: userId, username, name } = user;
   const { _id: tokenId, token, expiresAt } = refreshTokenData;
   const authResponse: AuthResponseDTO = {
-    user: {
-      id: userId.toString(),
-      username: username,
-      name: name,
-    },
+    user: userProfile,
     accessToken: accessToken,
     refreshTokenData: {
       id: tokenId.toString(),

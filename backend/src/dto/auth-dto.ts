@@ -1,7 +1,7 @@
+import { UserProfileResponseDTO } from "./user-dto";
+
 export interface AuthResponseDTO {
-  user:{id: string;
-  username: string;
-  name: string;}
+  user: UserProfileResponseDTO;
   accessToken: string;
   refreshTokenData: {
     id: string;
