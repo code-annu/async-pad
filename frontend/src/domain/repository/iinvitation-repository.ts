@@ -10,4 +10,9 @@ export interface IInvitationRepository {
   ): Promise<Invitation>;
 
   getUserInvitations(): Promise<Invitation[]>;
+
+  respondToInvitation(
+    invitationId: string,
+    accepted: boolean
+  ): Promise<Invitation>;
 }

@@ -49,13 +49,13 @@ function InvitationCard(props: InvitationCardProps) {
       {showActions && (
         <div className="px-6 py-4 bg-gray-100 flex justify-end space-x-3">
           <button
-            onClick={() => onAccept(invitation.docfile.id)}
+            onClick={() => onAccept(invitation.id)}
             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition cursor-pointer"
           >
             Accept
           </button>
           <button
-            onClick={() => onReject(invitation.docfile.id)}
+            onClick={() => onReject(invitation.id)}
             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition cursor-pointer"
           >
             Reject

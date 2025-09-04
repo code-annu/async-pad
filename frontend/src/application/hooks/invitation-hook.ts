@@ -7,6 +7,7 @@ import { inviteUserUsecase } from "../usecase/invitation/invite-user-usecase";
 import { CustomError } from "../../error/custom-error";
 import { ErrorType } from "../../error/error-type";
 import { getMyInvitationsUsecase } from "../usecase/invitation/get-my-invitations-usecase";
+import { respondToInvitationUsecase } from "../usecase/invitation/respond-to-invitation-usecase";
 
 export function useInvitation() {
   const [inviteSuccess, setInviteSuccess] = useState(false);
@@ -36,6 +37,14 @@ export function useInvitation() {
     setInvitations(invitations);
   };
 
+  const respondToInvitation = async (
+    invitationId: string,
+    accepted: boolean
+  ) => {
+    await respondToInvitationUsecase(invitationId, accepted);
+    getMyInvitations();
+  };
+
   return {
     inviteSuccess,
     inviteError,
@@ -44,5 +53,6 @@ export function useInvitation() {
     sendInvite,
     invitations,
     getMyInvitations,
+    respondToInvitation,
   };
 }
