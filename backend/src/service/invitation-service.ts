@@ -127,5 +127,4 @@ export class InvitationService {
 
     return mapToInvitationResponseDTO(invitation, inviter, invitee, docfile);
   }
-
 }

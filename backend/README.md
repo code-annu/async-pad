@@ -57,7 +57,7 @@
    }
 
 2. Get invitation details -> {
-   path: '/api/invitations/{invitationId}/',
+   path: '/api/invitations/{invitationId}/respond',
    method: get,
    }
 

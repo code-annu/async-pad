@@ -60,15 +60,16 @@ export class DocfileService {
     if (!docfile)
       throw new CustomError("Document not found!", ErrorType.NOT_FOUND);
 
+    const editorIds = docfile.editorIds.map((editorId) => editorId.toString());
     if (
       docfile.creatorId.toString() != editorId &&
-      !docfile.editorIds.includes(new Types.ObjectId(editorId))
+      !editorIds.includes(editorId)
     )
       throw new CustomError(
         "You are not authorized to edit this document",
         ErrorType.FORBIDDEN
       );
-
+    console.log("edited");
     docfile = await this.docfileRepository.updateDocfileById(
       docfileId,
       updates
