@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useParams } from "react-router-dom";
 import { useDocument } from "../../../application/hooks/document-hook";
 import { useEffect, useState } from "react";
@@ -5,22 +6,26 @@ import { formatDateTime } from "../../../util/date-format-util";
 
 function DocumentEditorPage() {
   const { documentId } = useParams();
-  const { document, getDocument } = useDocument();
+  const { document, getDocument, updateDocument } = useDocument();
   const [content, setContent] = useState("");
 
-  // Fetch document only once, on initial mount (or when documentId changes)
   useEffect(() => {
     if (documentId) {
       getDocument(documentId);
     }
-  }, [documentId]); // <- Only re-run if documentId changes
+  }, [documentId]);
 
-  // Initialize content once when document appears
   useEffect(() => {
-    if (document && content === "") {
+    if (document) {
       setContent(document.content);
     }
-  }, [document]); // <- Only when `document` updates
+  }, [document]);
+
+  const onDocumentEdit = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+    if (documentId && document)
+      updateDocument(documentId, { content: content, name: document.name });
+  };
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-8 space-y-6">
@@ -52,7 +57,7 @@ function DocumentEditorPage() {
 
       <textarea
         value={content}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={onDocumentEdit}
         className="w-full min-h-[400px] p-4 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
         placeholder="Edit document content..."
       />

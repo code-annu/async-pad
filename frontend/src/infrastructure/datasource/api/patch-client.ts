@@ -1,24 +1,19 @@
 import { CustomError } from "../../../error/custom-error";
 import { ErrorType } from "../../../error/error-type";
-import { API_BASE_URL } from "../config";
-import axios, { AxiosError } from "axios";
+import axiosInstance, { API_BASE_URL } from "../config";
+import { AxiosError } from "axios";
 
-export async function patch<T>(
-  endpoint: string,
-  body?: unknown,
-  token?: string
-) {
+export async function patchRequest<T>(endpoint: string, body?: unknown) {
   try {
-    const response = await axios.post(`${API_BASE_URL}${endpoint}`, body, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstance.patch(
+      `${API_BASE_URL}${endpoint}`,
+      body,
+      { method: "PATCH" }
+    );
     return response.data as T;
   } catch (e) {
     const axiosError = e as AxiosError;
+    console.log("error from api: ", axiosError.response?.data);
     switch (axiosError.status) {
       case ErrorType.FORBIDDEN:
         throw new CustomError(
