@@ -33,7 +33,7 @@ function DocumentsPage() {
     <div className="mt-20 ml-10">
       <div className="flex flex-wrap space-x-10 space-y-15">
         {documents.map((document) => (
-          <DocumentsCard document={document} onClick={onDocumentCardClick} />
+          <DocumentsCard document={document} onClick={onDocumentCardClick} key={document.id} />
         ))}
 
         <CreateDocumentTab onClick={toggleShowCreateDocumentPage} />

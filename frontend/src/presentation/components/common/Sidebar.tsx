@@ -27,7 +27,10 @@ function Sidebar() {
         >
           Profile
         </Link>
-        <Link to={""} className="border-b-1 pb-3 border-amber-500">
+        <Link
+          to={`/${user?.username}/invitations`}
+          className="border-b-1 pb-3 border-amber-500"
+        >
           Invitation
         </Link>
       </ul>

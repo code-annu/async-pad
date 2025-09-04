@@ -6,6 +6,7 @@ import DashboardLayout from "./presentation/layouts/DashboardLayout";
 import DocumentsPage from "./presentation/pages/dashboard/DocumentsPage";
 import ProfilePage from "./presentation/pages/dashboard/ProfilePage";
 import DocumentEditorPage from "./presentation/pages/dashboard/DocumentEditorPage";
+import InvitationPage from "./presentation/pages/dashboard/InvitationPage";
 
 export const enum AppRoute {
   HOME = "/",
@@ -14,6 +15,7 @@ export const enum AppRoute {
   LOGIN = "/login",
   REGISTER = "/register",
   DOCUMENT_EDIT = "/:username/documents/:documentId",
+  INVITATIONS = "/:username/invitations",
 }
 
 export const appRouter = createBrowserRouter([
@@ -25,6 +27,7 @@ export const appRouter = createBrowserRouter([
       { path: AppRoute.DOCUMENTS, Component: DocumentsPage },
       { path: AppRoute.PROFILE, Component: ProfilePage },
       { path: AppRoute.DOCUMENT_EDIT, Component: DocumentEditorPage },
+      { path: AppRoute.INVITATIONS, Component: InvitationPage },
     ],
   },
   // { path: AppRoute.HOME, Component: HomePage },

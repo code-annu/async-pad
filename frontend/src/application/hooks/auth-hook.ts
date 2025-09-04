@@ -7,6 +7,7 @@ import { refreshTokenUsecase } from "../usecase/auth/refresh-token-usecase";
 
 export function useAuth() {
   const { user, setUser } = useApp();
+
   const register = async (userData: UserRegister) => {
     const user = await userRegisterUseCase(userData);
     console.log(user);

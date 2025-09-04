@@ -1,22 +1,38 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputField from "../../components/common/InputField";
 import PrimaryButton from "../../components/common/PrimaryButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppRoute } from "../../../router";
+import { useAuth } from "../../../application/hooks/auth-hook";
 
 function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [fullname, setFullname] = useState("");
-  // const [name,setName] = useState("");
+  const [bio, setBio] = useState("");
+  const navigateTo = useNavigate();
+  const { register, user } = useAuth();
+  const [error, setError] = useState<string | null>(null);
 
-  const onButtonClick = async () => {};
+  useEffect(() => {
+    if (user) navigateTo(AppRoute.HOME);
+  }, [navigateTo, user]);
+
+  const onRegister = async () => {
+    if (password !== confirmPassword) {
+      setError("Password and confirm password should match");
+      return;
+    }
+    register({
+      username: username,
+      name: fullname,
+      password: password,
+      bio: bio,
+    });
+  };
   return (
-    <form
-      className=" w-1/2 mx-auto p-10 shadow-lg my-10 rounded flex flex-col space-y-5"
-      method="post"
-    >
+    <div className=" w-1/2 mx-auto p-10 shadow-lg my-10 rounded flex flex-col space-y-5">
       <InputField
         value={fullname}
         onValueChange={setFullname}
@@ -55,16 +71,28 @@ function RegisterPage() {
         paddingX="px-2"
       />
 
+      <InputField
+        value={bio}
+        onValueChange={setBio}
+        placeholder="Tell us about yourself"
+        label="Bio"
+        type="text"
+        paddingY="py-2"
+        paddingX="px-2"
+      />
+
       <PrimaryButton
         text="Register"
-        onClick={onButtonClick}
+        onClick={onRegister}
         buttonType="submit"
         height="h-12"
       />
       <Link to={AppRoute.LOGIN} className="mx-auto text-blue-700">
         Already have an account? Login
       </Link>
-    </form>
+
+      {error ? <h1 className="text-red-600 mt-10">{error}</h1> : null}
+    </div>
   );
 }
 
