@@ -1,21 +1,12 @@
 import type { Document } from "../../../domain/model/document-model";
+import { formatDateTime } from "../../../util/date-format-util";
 
 interface DocumentsCardProps {
-  document: Document; // ensure creatorName is available
+  document: Document;
   onClick: (id: string) => void;
 }
 
 function DocumentsCard({ document, onClick }: DocumentsCardProps) {
-  // Format createdAt
-  const formattedDate = new Date(document.createdAt).toLocaleDateString(
-    "en-IN",
-    {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }
-  );
-
   return (
     <div
       className="max-w-md p-10 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
@@ -26,7 +17,9 @@ function DocumentsCard({ document, onClick }: DocumentsCardProps) {
       </h2>
       <p className="text-sm text-gray-600 mt-5">
         Created:{" "}
-        <span className="font-medium text-gray-700">{formattedDate}</span>
+        <span className="font-medium text-gray-700">
+          {formatDateTime(document.createdAt)}
+        </span>
       </p>
       <p className="text-sm text-gray-600 mt-2">
         Creator:{" "}

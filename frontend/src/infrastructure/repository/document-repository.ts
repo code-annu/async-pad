@@ -22,11 +22,17 @@ export class DocumentRepository implements IDocumentRepository {
       docfiles: DocumentResponse[];
     }>(`/users/${username}/documents`);
 
-    console.log("docs from repo: ", documentsResponse);
     const documents = documentsResponse.docfiles.map((documentResponse) =>
       mapToDocument(documentResponse)
     );
 
     return documents;
+  }
+
+  async getDocument(id: string): Promise<Document> {
+    const documentResponse = await getRequest<DocumentResponse>(
+      `/documents/${id}`
+    );
+    return mapToDocument(documentResponse);
   }
 }

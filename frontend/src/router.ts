@@ -5,19 +5,18 @@ import HomePage from "./presentation/pages/dashboard/HomePage";
 import DashboardLayout from "./presentation/layouts/DashboardLayout";
 import DocumentsPage from "./presentation/pages/dashboard/DocumentsPage";
 import ProfilePage from "./presentation/pages/dashboard/ProfilePage";
-import CreateDocumentTab from "./presentation/components/document/CreateDocumentTab";
+import DocumentEditorPage from "./presentation/pages/dashboard/DocumentEditorPage";
 
 export const enum AppRoute {
   HOME = "/",
-  TEST = "/test",
   DOCUMENTS = "/:username/documents",
   PROFILE = "/:username",
   LOGIN = "/login",
   REGISTER = "/register",
+  DOCUMENT_EDIT = "/:username/documents/:documentId",
 }
 
 export const appRouter = createBrowserRouter([
-  { path: AppRoute.TEST, Component: CreateDocumentTab },
   {
     path: AppRoute.HOME,
     Component: DashboardLayout,
@@ -25,6 +24,7 @@ export const appRouter = createBrowserRouter([
       { index: true, Component: HomePage },
       { path: AppRoute.DOCUMENTS, Component: DocumentsPage },
       { path: AppRoute.PROFILE, Component: ProfilePage },
+      { path: AppRoute.DOCUMENT_EDIT, Component: DocumentEditorPage },
     ],
   },
   // { path: AppRoute.HOME, Component: HomePage },
