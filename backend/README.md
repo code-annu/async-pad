@@ -43,7 +43,7 @@
    }
 
 5. Document invitation -> {
-   path: '/api/documents/{documentId}/{invite}',
+   path: '/api/documents/{documentId}/invite',
    method: post,
    body:{username, message}
    }

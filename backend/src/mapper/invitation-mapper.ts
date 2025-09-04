@@ -21,7 +21,7 @@ export function mapToInvitationResponseDTO(
     },
     docfile: {
       id: docfile._id.toString(),
-      title: docfile.name,
+      name: docfile.name,
     },
     message: invitation.message,
     status: invitation.status,

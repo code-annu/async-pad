@@ -13,7 +13,7 @@ export interface InvitationResponseDTO {
   status: string;
   docfile: {
     id: string;
-    title: string;
+    name: string;
     // creator: { username: string; name: string };
   };
 }

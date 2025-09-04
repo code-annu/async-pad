@@ -9,3 +9,8 @@ userRouter.get(
   "/documents",
   userController.userDocfilesGet.bind(userController)
 );
+
+userRouter.get(
+  "/invitations",
+  userController.userInvitationsGet.bind(userController)
+);

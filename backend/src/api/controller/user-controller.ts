@@ -52,4 +52,24 @@ export class UserController {
       res.json({ status: "failed", message: message });
     }
   }
+
+  async userInvitationsGet(req: Request, res: Response) {
+    try {
+      const userInvitationsResponse = await this.userService.getUserInvitations(
+        req.user.userId
+      );
+
+      res.status(200).json(userInvitationsResponse);
+    } catch (e) {
+      let message: string;
+      if (e instanceof CustomError) {
+        res.status(e.errorType.valueOf());
+        message = e.message;
+      } else {
+        res.status(400);
+        message = (e as Error).message;
+      }
+      res.json({ status: "failed", message: message });
+    }
+  }
 }

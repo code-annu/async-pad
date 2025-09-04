@@ -13,6 +13,8 @@ import {
 import { DocfileResponseDTO } from "../dto/docfile-dto";
 import { mapToDocfileResponseDTO } from "../mapper/docfile-mapper";
 import { InvitationRepository } from "../data/repository/invitation-repository";
+import { mapToInvitationResponseDTO } from "../mapper/invitation-mapper";
+import { InvitationResponseDTO } from "../dto/invitation-dto";
 
 export class UserService {
   private userRepository = new UserRepository();
@@ -61,5 +63,31 @@ export class UserService {
     return mapToUserDocfilesResponse(user, docfilesResponse);
   }
 
-  // async getUserInvitations(userId: string) {}
+  async getUserInvitations(userId: string): Promise<InvitationResponseDTO[]> {
+    const user = await this.userRepository.getUserById(userId);
+    if (!user) throw new CustomError("User not found", ErrorType.NOT_FOUND);
+
+    const invitations = await this.invitationRepository.listInvitationsByIds(
+      user.invitationIds
+    );
+
+    const invitationsResponse: InvitationResponseDTO[] = [];
+    for (const invitation of invitations) {
+      const inviter = await this.userRepository.getUserById(
+        invitation.inviterId
+      );
+      const invitee = await this.userRepository.getUserById(
+        invitation.inviteeId
+      );
+      const docfile = await this.docfileRepository.getDocfileById(
+        invitation.docfileId
+      );
+
+      invitationsResponse.push(
+        mapToInvitationResponseDTO(invitation, inviter!, invitee!, docfile!)
+      );
+    }
+
+    return invitationsResponse;
+  }
 }
