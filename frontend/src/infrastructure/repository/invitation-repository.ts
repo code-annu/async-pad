@@ -25,6 +25,9 @@ export class InvitationRepository implements IInvitationRepository {
       `/invitations`
     );
     console.log(invitationsResponse);
-    return [];
+    const invitations = invitationsResponse.map((invitationResponse) =>
+      mapToInvitation(invitationResponse)
+    );
+    return invitations;
   }
 }
