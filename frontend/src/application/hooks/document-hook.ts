@@ -17,9 +17,11 @@ export function useDocument() {
   };
 
   const getMyDocuments = async () => {
-    const documents = await getUserDocumentsUsecase(user!.username);
-    console.log("Your documents are: ", documents);
-    setDocuments(documents);
+    if (user) {
+      const documents = await getUserDocumentsUsecase(user.username);
+      console.log("Your documents are: ", documents);
+      setDocuments(documents);
+    }
   };
 
   return { createDocument, getMyDocuments, documents };

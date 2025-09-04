@@ -6,6 +6,9 @@ export interface Document {
     username: string;
     name: string;
   };
+  createdAt: Date;
+  updatedAt: Date;
+  // editors:[]
 }
 
 export interface DocumentCreate {
