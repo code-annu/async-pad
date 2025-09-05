@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type {
   Document,
   DocumentCreate,
@@ -9,11 +9,26 @@ import { createDocumentUsecase } from "../usecase/document/create-document-useca
 import { getUserDocumentsUsecase } from "../usecase/document/get-user-documents-usecase";
 import { getDocumentUsecase } from "../usecase/document/get-document-usecase";
 import { updateDocumentUsecase } from "../usecase/document/update-document-usecase";
+import { socket } from "../../config/socket";
 
 export function useDocument() {
   const { user } = useApp();
   const [documents, setDocuments] = useState<Document[]>([]);
   const [document, setDocument] = useState<Document | null>(null);
+
+  useEffect(() => {
+    socket.connect();
+    console.log("connecting...");
+
+    const handler = (data: unknown) => {
+      const document = data as Document;
+      if (document.editedBy && document.editedBy.id !== user?.id) {
+        // setDocument(document);
+      }
+    };
+
+    socket.on("document:updated", handler);
+  }, []);
 
   const createDocument = async (documentData: DocumentCreate) => {
     const document = await createDocumentUsecase(documentData);
@@ -34,7 +49,8 @@ export function useDocument() {
   };
 
   const updateDocument = async (id: string, updates: DocumentUpdate) => {
-    updateDocumentUsecase(id, updates);
+    const updatedDocument = await updateDocumentUsecase(id, updates);
+    return updatedDocument;
   };
 
   return {

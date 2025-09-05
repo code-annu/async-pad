@@ -8,6 +8,10 @@ export interface Document {
   };
   createdAt: Date;
   updatedAt: Date;
+  editedBy?: {
+    id: string;
+    username: string;
+  } | null;
   // editors:[]
 }
 

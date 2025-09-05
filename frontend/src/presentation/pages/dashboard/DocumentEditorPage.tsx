@@ -6,6 +6,7 @@ import { formatDateTime } from "../../../util/date-format-util";
 import InputField from "../../components/common/InputField";
 import PrimaryButton from "../../components/common/PrimaryButton";
 import { useInvitation } from "../../../application/hooks/invitation-hook";
+import { socket } from "../../../config/socket";
 
 function DocumentEditorPage() {
   const { documentId } = useParams();
@@ -17,6 +18,7 @@ function DocumentEditorPage() {
 
   useEffect(() => {
     if (documentId) {
+      socket.emit("room:join", documentId);
       getDocument(documentId);
     }
   }, [documentId]);
@@ -24,16 +26,18 @@ function DocumentEditorPage() {
   useEffect(() => {
     if (document) {
       setContent(document.content);
+      console.log("yes document edited");
     }
   }, [document]);
 
-  const onDocumentEdit = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onDocumentEdit = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    if (documentId)
-      updateDocument(documentId, {
+    if (documentId) {
+      await updateDocument(documentId, {
         content: e.target.value,
         name: document!.name,
       });
+    }
   };
 
   const onInvite = () => {
