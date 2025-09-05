@@ -9,6 +9,7 @@ import { ErrorType } from "../error/error-type";
 import { UserRepository } from "../data/repository/user-repository";
 import { Types } from "mongoose";
 import { mapToDocfileResponseDTO } from "../mapper/docfile-mapper";
+import { io } from "../config/io-server";
 
 export class DocfileService {
   private docfileRepository = new DocfileRepository();
@@ -82,6 +83,25 @@ export class DocfileService {
       throw new CustomError("Creator not found", ErrorType.NOT_FOUND);
 
     const editors = await this.userRepository.listUsersByIds(docfile.editorIds);
+
+    io()
+      .to(docfileId)
+      .emit("document:updated", {
+        id: docfileId,
+        name: docfile.name,
+        content: docfile.content,
+        creator: {
+          username: creator.username,
+          name: creator.name,
+        },
+        editedBy: {
+          id: editorId,
+          username: editor.username,
+        },
+        createdAt: docfile.createdAt,
+        updatedAt: docfile.updatedAt,
+      });
+    console.log("emitting to: ", docfileId);
 
     return mapToDocfileResponseDTO(docfile, creator, editors);
   }
