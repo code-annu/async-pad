@@ -23,7 +23,7 @@ export function useDocument() {
     const handler = (data: unknown) => {
       const document = data as Document;
       if (document.editedBy && document.editedBy.id !== user?.id) {
-        // setDocument(document);
+        setDocument(document);
       }
     };
 
