@@ -10,6 +10,12 @@ const TYPES = {
 
   // Controllers
   AuthController: Symbol.for("AuthController"),
+  ProfileController: Symbol.for("ProfileController"),
+
+  // Use Cases
+  UpdateProfileUsecase: Symbol.for("UpdateProfileUsecase"),
+  GetProfileUsecase: Symbol.for("GetProfileUsecase"),
+  DeleteProfileUsecase: Symbol.for("DeleteProfileUsecase"),
 };
 
 export { TYPES };

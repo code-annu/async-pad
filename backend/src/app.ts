@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { authRouter } from "./api/router/auth-router";
 import { errorHandler } from "./api/middleware/handle-error";
+import { profileRouter } from "./api/router/profile-router";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/profile", profileRouter);
 
 app.use(errorHandler);
 
