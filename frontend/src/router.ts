@@ -4,12 +4,14 @@ import { SignupPage } from "./features/authentication/pages/SignupPage";
 import { DashboardLayout } from "./common/layouts/DashboardLayout";
 import { HomePage } from "./features/home/pages/HomePage";
 import { ProfilePage } from "./features/profile/pages/ProfilePage";
+import { SettingPage } from "./features/home/pages/SettingPage";
 
 export enum AppRoutes {
   LOGIN = "/login",
   SIGNUP = "/signup",
   HOME = "/",
   PROFILE = "/profile",
+  SETTING = "/setting",
 }
 
 export const appRouter = createBrowserRouter([
@@ -19,6 +21,7 @@ export const appRouter = createBrowserRouter([
     children: [
       { path: AppRoutes.HOME, Component: HomePage },
       { path: AppRoutes.PROFILE, Component: ProfilePage },
+      { path: AppRoutes.SETTING, Component: SettingPage },
     ],
   },
   { path: AppRoutes.LOGIN, Component: LoginPage },

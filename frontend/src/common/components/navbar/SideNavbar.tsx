@@ -26,7 +26,7 @@ export const SideNavbar: React.FC = () => {
     {
       label: "Settings",
       icon: <Settings size={20} />,
-      path: "/settings", // Placeholder path
+      path: AppRoutes.SETTING, // Placeholder path
     },
   ];
 

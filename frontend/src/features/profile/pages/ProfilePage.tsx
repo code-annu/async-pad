@@ -19,7 +19,9 @@ export const ProfilePage: React.FC = () => {
       navigate(AppRoutes.LOGIN);
       return;
     }
-    dispatch(getProfileThunk());
+    if (!profile) {
+      dispatch(getProfileThunk());
+    }
   }, [accessToken, dispatch, navigate]);
 
   if (isLoading) {
