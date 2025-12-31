@@ -1,0 +1,37 @@
+import { Router } from "express";
+import { container } from "../../di/config.inversify";
+import { TYPES } from "../../di/types";
+import { AsyncPadDocumentController } from "../controller/AsyncPadDocumentController";
+import { validateAuthorization } from "../middleware/validate-authorization";
+import { validateRequestBody } from "../middleware/validate-request-body";
+import {
+  createAsyncPadDocumentSchema,
+  updateAsyncPadDocumentSchema,
+} from "../schema/asyncpad-schema";
+
+const asyncPadDocumentRouter = Router();
+const controller = container.get<AsyncPadDocumentController>(
+  TYPES.AsyncPadDocumentController
+);
+
+asyncPadDocumentRouter.use(validateAuthorization);
+
+asyncPadDocumentRouter.post(
+  "/",
+  validateRequestBody(createAsyncPadDocumentSchema),
+  controller.create.bind(controller)
+);
+
+asyncPadDocumentRouter.get("/", controller.getUserDocuments.bind(controller));
+
+asyncPadDocumentRouter.get("/:id", controller.get.bind(controller));
+
+asyncPadDocumentRouter.patch(
+  "/:id",
+  validateRequestBody(updateAsyncPadDocumentSchema),
+  controller.update.bind(controller)
+);
+
+asyncPadDocumentRouter.delete("/:id", controller.delete.bind(controller));
+
+export { asyncPadDocumentRouter };

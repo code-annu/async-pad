@@ -1,10 +1,10 @@
 export interface Session {
-  id: string;
-  userId: string;
-  token: string;
-  expiresAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  readonly id: string;
+  readonly userId: string;
+  readonly token: string;
+  readonly expiresAt: Date;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
 }
 
 export interface SessionCreate {

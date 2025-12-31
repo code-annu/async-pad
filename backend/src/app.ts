@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import express, { Request, Response } from "express";
-import dotenv from "dotenv";
 import { authRouter } from "./api/router/auth-router";
-import { errorHandler } from "./api/middleware/handle-error";
 import { profileRouter } from "./api/router/profile-router";
-
-dotenv.config();
+import { asyncPadDocumentRouter } from "./api/router/asyncpad-document-router";
+import { errorHandler } from "./api/middleware/handle-error";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -15,6 +15,8 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Success check message" });
@@ -22,6 +24,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/profile", profileRouter);
+app.use("/api/documents", asyncPadDocumentRouter);
 
 app.use(errorHandler);
 

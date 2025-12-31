@@ -8,12 +8,11 @@ export const validateRequestBody =
   (schema: ZodObject<any>) =>
   (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log("Validating request body against schema...");
       schema.parse(req.body);
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        console.log(error.issues[0].message);
+        console.log(error);
         throw new BadRequestError(error.issues[0].message);
       }
       throw new DatabaseError("Internal server error");

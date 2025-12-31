@@ -9,9 +9,17 @@ import { UserRepository } from "../infrastructure/repository/UserRepository";
 import { SessionRepository } from "../infrastructure/repository/SessionRepository";
 import { AuthController } from "../api/controller/AuthController";
 import { ProfileController } from "../api/controller/ProfileController";
+import { AsyncPadDocumentController } from "../api/controller/AsyncPadDocumentController";
 import { DeleteProfileUsecase } from "../application/usecases/profile/DeleteProfileUsecase";
 import { GetProfileUsecase } from "../application/usecases/profile/GetProfileUsecase";
 import { UpdateProfileUsecase } from "../application/usecases/profile/UpdateProfileUsecase";
+import { CreateAsyncPadDocumentUsecase } from "../application/usecases/asyncpad_document/CreateAsyncPadDocumentUsecase";
+import { GetAsyncPadDocumentUsecase } from "../application/usecases/asyncpad_document/GetAsyncPadDocumentUsecase";
+import { UpdateAsyncPadDocumentUsecase } from "../application/usecases/asyncpad_document/UpdateAsyncPadDocumentUsecase";
+import { DeleteAsyncPadDocumentUsecase } from "../application/usecases/asyncpad_document/DeleteAsyncPadDocumentUsecase";
+import { GetUserAsyncPadDocumentsUsecase } from "../application/usecases/asyncpad_document/GetUserAsyncPadDocumentsUsecase";
+import { IAsyncPadRepository } from "../domain/repository/IAsyncPadRepository";
+import { AsyncPadRepository } from "../infrastructure/repository/AsyncPadRepository";
 
 const container = new Container();
 
@@ -32,16 +40,39 @@ container
   .bind<DeleteProfileUsecase>(TYPES.DeleteProfileUsecase)
   .to(DeleteProfileUsecase);
 
+// AsyncPad Document Use Cases
+container
+  .bind<CreateAsyncPadDocumentUsecase>(TYPES.CreateAsyncPadDocumentUsecase)
+  .to(CreateAsyncPadDocumentUsecase);
+container
+  .bind<GetAsyncPadDocumentUsecase>(TYPES.GetAsyncPadDocumentUsecase)
+  .to(GetAsyncPadDocumentUsecase);
+container
+  .bind<UpdateAsyncPadDocumentUsecase>(TYPES.UpdateAsyncPadDocumentUsecase)
+  .to(UpdateAsyncPadDocumentUsecase);
+container
+  .bind<DeleteAsyncPadDocumentUsecase>(TYPES.DeleteAsyncPadDocumentUsecase)
+  .to(DeleteAsyncPadDocumentUsecase);
+container
+  .bind<GetUserAsyncPadDocumentsUsecase>(TYPES.GetUserAsyncPadDocumentsUsecase)
+  .to(GetUserAsyncPadDocumentsUsecase);
+
 // Repositories
 container.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepository);
 container
   .bind<ISessionRepository>(TYPES.ISessionRepository)
   .to(SessionRepository);
+container
+  .bind<IAsyncPadRepository>(TYPES.IAsyncPadRepository)
+  .to(AsyncPadRepository);
 
 // Controllers
 container.bind<AuthController>(TYPES.AuthController).to(AuthController);
 container
   .bind<ProfileController>(TYPES.ProfileController)
   .to(ProfileController);
+container
+  .bind<AsyncPadDocumentController>(TYPES.AsyncPadDocumentController)
+  .to(AsyncPadDocumentController);
 
 export { container };
