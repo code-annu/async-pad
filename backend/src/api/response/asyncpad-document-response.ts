@@ -14,7 +14,11 @@ export abstract class AsyncPadDocumentResponseMapper {
         id: document.id,
         title: document.title,
         currentContent: document.currentContent,
-        owner: document.owner,
+        owner: {
+          id: document.owner.id,
+          username: document.owner.username,
+          avatarUrl: document.owner.avatarUrl,
+        },
         currentVersion: document.currentVersion,
         isPrivate: document.isPrivate,
         isDeleted: document.isDeleted,
@@ -36,7 +40,6 @@ export abstract class AsyncPadDocumentResponseMapper {
       data: documents.map((document) => ({
         id: document.id,
         title: document.title,
-        currentContent: document.currentContent,
         owner: {
           id: document.owner.id,
           username: document.owner.username,
