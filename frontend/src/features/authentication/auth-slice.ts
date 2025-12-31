@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { AsyncPadError } from "../../util/error-handler-util";
 import { loginUser, refreshToken, signupUser } from "./auth-thunk";
+import { StorageUtil } from "../../util/StorageUtil";
 
 export interface AuthState {
   isLoading: boolean;
@@ -23,6 +24,9 @@ const authSlice = createSlice({
     logout: (state) => {
       state.accessToken = null;
       state.refreshToken = null;
+      state.isLoading = false;
+      state.error = null;
+      StorageUtil.clearTokens();
     },
   },
   extraReducers: (builder) => {
@@ -77,3 +81,5 @@ const authSlice = createSlice({
 });
 
 export const authReducer = authSlice.reducer;
+export const { logout } = authSlice.actions;
+
