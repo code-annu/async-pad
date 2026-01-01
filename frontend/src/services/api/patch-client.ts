@@ -1,4 +1,4 @@
-import axiosInstance from "../client";
+import axiosInstance, { API_BASE_URL } from "../client";
 
 export async function patchRequest<T>(endpoint: string, body?: unknown) {
   const response = await axiosInstance.patch(

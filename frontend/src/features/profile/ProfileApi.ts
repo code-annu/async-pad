@@ -1,6 +1,6 @@
 import { deleteRequest } from "../../services/api/delete-client";
 import { getRequest } from "../../services/api/get-client";
-import { postRequest } from "../../services/api/post-client";
+import { patchRequest } from "../../services/api/patch-client";
 import type { Profile, ProfileResponse, ProfileUpdate } from "./types";
 
 export abstract class ProfileApi {
@@ -10,7 +10,9 @@ export abstract class ProfileApi {
   }
 
   static async updateProfile(profile: ProfileUpdate): Promise<Profile> {
-    const res = await postRequest<ProfileResponse>("/profile/me", profile);
+    console.log(profile);
+    const res = await patchRequest<ProfileResponse>("/profile/me", profile);
+    console.log(res.data);
     return res.data;
   }
 

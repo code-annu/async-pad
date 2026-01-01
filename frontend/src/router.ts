@@ -5,6 +5,7 @@ import { DashboardLayout } from "./common/layouts/DashboardLayout";
 import { HomePage } from "./features/home/pages/HomePage";
 import { ProfilePage } from "./features/profile/pages/ProfilePage";
 import { SettingPage } from "./features/home/pages/SettingPage";
+import { DocumentsPage } from "./features/documents/pages/DocumentsPage";
 
 export enum AppRoutes {
   LOGIN = "/login",
@@ -12,6 +13,7 @@ export enum AppRoutes {
   HOME = "/",
   PROFILE = "/profile",
   SETTING = "/setting",
+  DOCUMENTS = "/documents",
 }
 
 export const appRouter = createBrowserRouter([
@@ -22,6 +24,7 @@ export const appRouter = createBrowserRouter([
       { path: AppRoutes.HOME, Component: HomePage },
       { path: AppRoutes.PROFILE, Component: ProfilePage },
       { path: AppRoutes.SETTING, Component: SettingPage },
+      { path: AppRoutes.DOCUMENTS, Component: DocumentsPage },
     ],
   },
   { path: AppRoutes.LOGIN, Component: LoginPage },

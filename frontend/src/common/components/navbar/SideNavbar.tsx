@@ -1,18 +1,27 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Home, FileText, Bell, User, Settings } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Home, FileText, Bell, User, Settings, LogOut } from "lucide-react";
 import { AppRoutes } from "../../../router";
 import { SideNavButton } from "../buttons/SideNavButton";
+import { useAppDispatch } from "../../../app/app-hook";
+import { logout } from "../../../features/authentication/auth-slice";
 
 export const SideNavbar: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate(AppRoutes.LOGIN);
+  };
 
   const topNavItems = [
     { label: "Home", icon: <Home size={20} />, path: AppRoutes.HOME },
     {
       label: "Documents",
       icon: <FileText size={20} />,
-      path: "/documents", // Placeholder path
+      path: AppRoutes.DOCUMENTS,
     },
     {
       label: "Notifications",
@@ -22,11 +31,11 @@ export const SideNavbar: React.FC = () => {
   ];
 
   const bottomNavItems = [
-    { label: "Profile", icon: <User size={20} />, path: AppRoutes.PROFILE }, // Using defined route
+    { label: "Profile", icon: <User size={20} />, path: AppRoutes.PROFILE },
     {
       label: "Settings",
       icon: <Settings size={20} />,
-      path: AppRoutes.SETTING, // Placeholder path
+      path: AppRoutes.SETTING,
     },
   ];
 
@@ -63,6 +72,14 @@ export const SideNavbar: React.FC = () => {
             />
           </Link>
         ))}
+
+        {/* Logout Button */}
+        <SideNavButton
+          icon={<LogOut size={20} />}
+          label="Logout"
+          isActive={false}
+          onClick={handleLogout}
+        />
       </div>
     </div>
   );

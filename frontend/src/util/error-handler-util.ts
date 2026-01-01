@@ -10,6 +10,7 @@ export interface AsyncPadError {
 }
 
 export const mapToCustomError = (err: any): AsyncPadError => {
+  console.log(err);
   if (err instanceof AxiosError) {
     const errorData = err.response?.data as AsyncPadError;
     return errorData;
