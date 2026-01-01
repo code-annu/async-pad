@@ -4,12 +4,7 @@ import { Save, X, Edit2, Trash2 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../app/app-hook";
 import { AppRoutes } from "../../../router";
 import { CircularLoadingBar } from "../../../common/components/progress/CircularLoadingBar";
-import {
-  deleteProfileThunk,
-  getProfileThunk,
-  updateProfileThunk,
-} from "../profile-thunk";
-import { StorageUtil } from "../../../util/StorageUtil";
+import { deleteProfileThunk, updateProfileThunk } from "../profile-thunk";
 import { PrimaryButton } from "../../../common/components/buttons/PrimaryButton";
 import { DangerButton } from "../../../common/components/buttons/DangerButton";
 import { logout } from "../../authentication/auth-slice";
@@ -17,7 +12,6 @@ import { logout } from "../../authentication/auth-slice";
 export const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { accessToken } = useAppSelector((state) => state.auth);
   const { profile, isLoading, error } = useAppSelector(
     (state) => state.profile
   );
@@ -29,19 +23,13 @@ export const ProfilePage: React.FC = () => {
   });
 
   useEffect(() => {
-    if (!accessToken && !StorageUtil.getAccessToken()) {
-      navigate(AppRoutes.LOGIN);
-      return;
-    }
-    if (!profile) {
-      dispatch(getProfileThunk());
-    } else {
+    if (profile) {
       setFormData({
         fullname: profile.fullname,
         about: profile.about || "",
       });
     }
-  }, [accessToken, dispatch, navigate, profile]);
+  }, [profile]);
 
   const handleUpdate = async () => {
     if (!profile) return;

@@ -1,20 +1,8 @@
-import React, { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../app/app-hook";
-import { getProfileThunk } from "../../profile/profile-thunk";
-import { StorageUtil } from "../../../util/StorageUtil";
+import React from "react";
+import { useAppSelector } from "../../../app/app-hook";
 
 export const HomePage: React.FC = () => {
-  const dispatch = useAppDispatch();
   const { profile } = useAppSelector((state) => state.profile);
-  const { accessToken } = useAppSelector((state) => state.auth);
-
-  useEffect(() => {
-    // If we have an access token (either in state or storage) but no profile, fetch it
-    const hasToken = accessToken || StorageUtil.getAccessToken();
-    if (hasToken && !profile) {
-      dispatch(getProfileThunk());
-    }
-  }, [accessToken, profile, dispatch]);
 
   const firstName = profile?.fullname.split(" ")[0] || "there";
 

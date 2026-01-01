@@ -39,11 +39,12 @@ export const loginUser = createAsyncThunk<
 
 export const refreshToken = createAsyncThunk<
   AuthUser,
-  string,
+  void,
   { rejectValue: AsyncPadError }
->("auth/refreshToken", async (token, { rejectWithValue }) => {
+>("auth/refreshToken", async (_, { rejectWithValue }) => {
   try {
-    const response = await AuthApi.refreshToken(token);
+    const token = StorageUtil.getRefreshToken();
+    const response = await AuthApi.refreshToken(token!!);
     StorageUtil.saveAccessToken(response.accessToken);
     StorageUtil.saveRefreshToken(response.refreshToken);
     return response;
