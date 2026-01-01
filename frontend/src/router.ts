@@ -6,6 +6,7 @@ import { HomePage } from "./features/home/pages/HomePage";
 import { ProfilePage } from "./features/profile/pages/ProfilePage";
 import { SettingPage } from "./features/home/pages/SettingPage";
 import { DocumentsPage } from "./features/documents/pages/DocumentsPage";
+import { EditDocumentPage } from "./features/documents/pages/EditDocumentPage";
 
 export enum AppRoutes {
   LOGIN = "/login",
@@ -25,6 +26,7 @@ export const appRouter = createBrowserRouter([
       { path: AppRoutes.PROFILE, Component: ProfilePage },
       { path: AppRoutes.SETTING, Component: SettingPage },
       { path: AppRoutes.DOCUMENTS, Component: DocumentsPage },
+      { path: AppRoutes.DOCUMENTS + "/:id", Component: EditDocumentPage },
     ],
   },
   { path: AppRoutes.LOGIN, Component: LoginPage },
