@@ -35,7 +35,14 @@ export const EditDocumentPage: React.FC = () => {
   const debouncedUpdate = useRef(
     debounce(
       (docId: string, data: { title?: string; currentContent?: string }) => {
-        dispatch(updateDocument({ id: docId, data }));
+        if (
+          data.title &&
+          data.currentContent &&
+          data.title.length > 0 &&
+          data.currentContent.length > 0
+        ) {
+          dispatch(updateDocument({ id: docId, data }));
+        }
       },
       1000
     )
