@@ -65,7 +65,8 @@ export const updateDocument = createAsyncThunk<
   { rejectValue: AsyncPadError }
 >("documents/updateDocument", async ({ id, data }, { rejectWithValue }) => {
   try {
-    return await DocumentApi.updateDocument(id, data);
+    const res = await DocumentApi.updateDocument(id, data);
+    return res;
   } catch (error) {
     return rejectWithValue(mapToCustomError(error));
   }

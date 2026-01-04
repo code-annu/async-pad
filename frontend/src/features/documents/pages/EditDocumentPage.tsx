@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/app-hook";
 import { getDocument, updateDocument, deleteDocument } from "../document-thunk";
 import { CircularLoadingBar } from "../../../common/components/progress/CircularLoadingBar";
-import debounce from "lodash/debounce";
+
 import { DangerButton } from "../../../common/components/buttons/DangerButton";
 import { AppRoutes } from "../../../router";
 import { ArrowLeft, Clock, User, Trash2 } from "lucide-react";
@@ -16,8 +16,10 @@ export const EditDocumentPage: React.FC = () => {
     (state) => state.document
   );
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+  });
   const [isInitializing, setIsInitializing] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -27,51 +29,29 @@ export const EditDocumentPage: React.FC = () => {
       dispatch(getDocument(id))
         .unwrap()
         .then((doc) => {
-          setTitle(doc.title);
-          setContent(doc.currentContent);
+          setFormData({
+            title: doc.title,
+            content: doc.currentContent,
+          });
           setIsInitializing(false);
         })
         .catch(() => setIsInitializing(false));
     }
   }, [dispatch, id]);
 
-  // Debounced update function for content and title
-  const debouncedUpdate = useRef(
-    debounce(
-      (docId: string, data: { title?: string; currentContent?: string }) => {
-        if (
-          data.title &&
-          data.currentContent &&
-          data.title.length > 0 &&
-          data.currentContent.length > 0
-        ) {
-          dispatch(updateDocument({ id: docId, data }));
-        }
-      },
-      1000
-    )
-  ).current;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name === "title" && e.target.value.length < 1) return;
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-  // Cleanup debounce on unmount
-  useEffect(() => {
-    return () => {
-      debouncedUpdate.cancel();
-    };
-  }, [debouncedUpdate]);
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTitle = e.target.value;
-    setTitle(newTitle);
     if (id) {
-      debouncedUpdate(id, { title: newTitle });
-    }
-  };
-
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newContent = e.target.value;
-    setContent(newContent);
-    if (id) {
-      debouncedUpdate(id, { currentContent: newContent });
+      if (name === "title") {
+        dispatch(updateDocument({ id, data: { title: value } }));
+      } else if (name === "content") {
+        dispatch(updateDocument({ id, data: { currentContent: value } }));
+      }
     }
   };
 
@@ -160,8 +140,9 @@ export const EditDocumentPage: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <input
               type="text"
-              value={title}
-              onChange={handleTitleChange}
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
               className="text-2xl md:text-3xl font-bold bg-transparent border-none focus:ring-0 focus:outline-none placeholder-gray-300 text-gray-800 w-full"
               placeholder="Untitled Document"
             />
@@ -193,8 +174,9 @@ export const EditDocumentPage: React.FC = () => {
         <div className="max-w-4xl mx-auto h-full flex flex-col">
           <div className="flex-grow bg-white rounded-xl shadow-sm border border-gray-200 p-8 min-h-[600px] relative">
             <textarea
-              value={content}
-              onChange={handleContentChange}
+              name="content"
+              value={formData.content}
+              onChange={handleChange}
               placeholder="Start typing your thoughts..."
               className="w-full h-full resize-none border-none focus:ring-0 focus:outline-none text-gray-700 text-lg leading-relaxed bg-transparent"
               style={{ minHeight: "calc(100vh - 300px)" }}

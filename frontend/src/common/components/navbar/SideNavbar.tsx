@@ -26,7 +26,7 @@ export const SideNavbar: React.FC = () => {
     {
       label: "Notifications",
       icon: <Bell size={20} />,
-      path: "/notifications", // Placeholder path
+      path: AppRoutes.NOTIFICATION,
     },
   ];
 
