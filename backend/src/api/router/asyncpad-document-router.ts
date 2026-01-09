@@ -8,10 +8,15 @@ import {
   createAsyncPadDocumentSchema,
   updateAsyncPadDocumentSchema,
 } from "../schema/asyncpad-schema";
+import { CollaborationController } from "../controller/CollaborationController";
+import { collaborationSendSchema } from "../schema/collaboration-schema";
 
 const asyncPadDocumentRouter = Router();
 const controller = container.get<AsyncPadDocumentController>(
   TYPES.AsyncPadDocumentController
+);
+const collaborationController = container.get<CollaborationController>(
+  TYPES.CollaborationController
 );
 
 asyncPadDocumentRouter.use(validateAuthorization);
@@ -33,5 +38,21 @@ asyncPadDocumentRouter.patch(
 );
 
 asyncPadDocumentRouter.delete("/:id", controller.delete.bind(controller));
+
+asyncPadDocumentRouter.post(
+  "/:id/collaborations",
+  validateRequestBody(collaborationSendSchema),
+  (req, res, next) => {
+    req.body.documentId = req.params.id;
+    collaborationController.sendInvitation(req, res, next);
+  }
+);
+
+asyncPadDocumentRouter.get(
+  "/:id/collaborations",
+  collaborationController.getDocumentCollaborations.bind(
+    collaborationController
+  )
+);
 
 export { asyncPadDocumentRouter };

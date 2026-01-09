@@ -14,7 +14,7 @@ export abstract class AuthResponseMapper {
         user: {
           id: authOutput.user.id,
           username: authOutput.user.username,
-          createdAt: authOutput.user.createdAt,
+          joinedAt: authOutput.user.createdAt,
         },
         accessToken: authOutput.accessToken,
         refreshToken: authOutput.session.token,
