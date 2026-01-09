@@ -3,6 +3,7 @@ const TYPES = {
   IUserRepository: Symbol.for("IUserRepository"),
   ISessionRepository: Symbol.for("ISessionRepository"),
   IAsyncPadRepository: Symbol.for("IAsyncPadRepository"),
+  ICollaborationRepository: Symbol.for("ICollaborationRepository"),
 
   // Use Cases
   SignupUsecase: Symbol.for("SignupUsecase"),
@@ -27,6 +28,24 @@ const TYPES = {
   GetUserAsyncPadDocumentsUsecase: Symbol.for(
     "GetUserAsyncPadDocumentsUsecase"
   ),
+
+  // Collaboration Use Cases
+  GetCollaborationUsecase: Symbol.for("GetCollaborationUsecase"),
+  GetUserCollaborationsUsecase: Symbol.for("GetUserCollaborationsUsecase"),
+  UpdateCollaborationUsecase: Symbol.for("UpdateCollaborationUsecase"),
+  UpdateCollaborationStatusUsecase: Symbol.for(
+    "UpdateCollaborationStatusUsecase"
+  ),
+  SendCollaborationInvitationUsecase: Symbol.for(
+    "SendCollaborationInvitationUsecase"
+  ),
+  ReactCollaborationInvitationUsecase: Symbol.for(
+    "ReactCollaborationInvitationUsecase"
+  ),
+  GetDocumentCollaborationsUsecase: Symbol.for(
+    "GetDocumentCollaborationsUsecase"
+  ),
+  CollaborationController: Symbol.for("CollaborationController"),
 };
 
 export { TYPES };

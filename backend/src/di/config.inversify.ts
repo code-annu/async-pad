@@ -20,6 +20,15 @@ import { DeleteAsyncPadDocumentUsecase } from "../application/usecases/asyncpad_
 import { GetUserAsyncPadDocumentsUsecase } from "../application/usecases/asyncpad_document/GetUserAsyncPadDocumentsUsecase";
 import { IAsyncPadRepository } from "../domain/repository/IAsyncPadRepository";
 import { AsyncPadRepository } from "../infrastructure/repository/AsyncPadRepository";
+import { SendCollaborationInvitationUsecase } from "../application/usecases/collaboration/SendCollaborationInvitationUsecase";
+import { ReactCollaborationInvitationUsecase } from "../application/usecases/collaboration/ReactCollaborationInvitationUsecase";
+import { UpdateCollaborationUsecase } from "../application/usecases/collaboration/UpdateCollaborationUsecase";
+import { GetCollaborationUsecase } from "../application/usecases/collaboration/GetCollaborationUsecase";
+import { GetUserCollaborationsUsecase } from "../application/usecases/collaboration/GetUserCollaborationsUsecase";
+import { GetDocumentCollaborationsUsecase } from "../application/usecases/collaboration/GetDocumentCollaborationsUsecase";
+import { CollaborationController } from "../api/controller/CollaborationController";
+import { ICollaborationRepository } from "../domain/repository/ICollaborationRepository";
+import { CollaborationRepository } from "../infrastructure/repository/CollaborationRepository";
 
 const container = new Container();
 
@@ -66,6 +75,10 @@ container
   .bind<IAsyncPadRepository>(TYPES.IAsyncPadRepository)
   .to(AsyncPadRepository);
 
+container
+  .bind<ICollaborationRepository>(TYPES.ICollaborationRepository)
+  .to(CollaborationRepository);
+
 // Controllers
 container.bind<AuthController>(TYPES.AuthController).to(AuthController);
 container
@@ -74,5 +87,33 @@ container
 container
   .bind<AsyncPadDocumentController>(TYPES.AsyncPadDocumentController)
   .to(AsyncPadDocumentController);
+container
+  .bind<CollaborationController>(TYPES.CollaborationController)
+  .to(CollaborationController);
+
+container
+  .bind<SendCollaborationInvitationUsecase>(
+    TYPES.SendCollaborationInvitationUsecase
+  )
+  .to(SendCollaborationInvitationUsecase);
+container
+  .bind<ReactCollaborationInvitationUsecase>(
+    TYPES.ReactCollaborationInvitationUsecase
+  )
+  .to(ReactCollaborationInvitationUsecase);
+container
+  .bind<UpdateCollaborationUsecase>(TYPES.UpdateCollaborationUsecase)
+  .to(UpdateCollaborationUsecase);
+container
+  .bind<GetCollaborationUsecase>(TYPES.GetCollaborationUsecase)
+  .to(GetCollaborationUsecase);
+container
+  .bind<GetUserCollaborationsUsecase>(TYPES.GetUserCollaborationsUsecase)
+  .to(GetUserCollaborationsUsecase);
+container
+  .bind<GetDocumentCollaborationsUsecase>(
+    TYPES.GetDocumentCollaborationsUsecase
+  )
+  .to(GetDocumentCollaborationsUsecase);
 
 export { container };
