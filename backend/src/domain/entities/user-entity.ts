@@ -24,3 +24,4 @@ export interface UserUpdate {
   about?: string;
   avatarUrl?: string;
 }
+
